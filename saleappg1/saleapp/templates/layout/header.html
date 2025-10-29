@@ -14,7 +14,11 @@
                     <a class="nav-link" href="/?cate_id={{c.id}}">{{c.name}}</a>
                 </li>
                 {%endfor%}
+                 <li class="nav-item">
+                    <a class="nav-link active" href="/login">&#128205;Đăng nhập</a>
+                </li>
             </ul>
+
             <form class="d-flex" method="get">
                 <input class="form-control me-2" type="text" placeholder="Nhập từ khóa..." name="q">
                 <button class="btn btn-primary" type="submit">Tìm</button>
