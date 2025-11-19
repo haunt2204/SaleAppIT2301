@@ -6,6 +6,10 @@
 
 <h3 class="text-info text-center mt-3">TRANG ĐĂNG NHẬP</h3>
 
+{% if err_msg%}
+<div class="alert alert-danger">{{err_msg}}</div>
+{% endif %}
+
 <form method="post">
     <div class="form-floating mb-3 mt-3">
         <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" name="username">
@@ -13,7 +17,7 @@
     </div>
 
     <div class="form-floating mt-3 mb-3">
-        <input type="text" class="form-control" id="password" placeholder="Nhập mật khẩu" name="password">
+        <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" name="password">
         <label for="password">Nhập mật khẩu</label>
     </div>
 
