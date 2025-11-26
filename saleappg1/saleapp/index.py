@@ -1,8 +1,10 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 import math
 import dao
-from saleapp import app, login, admin
-from flask_login import login_user, current_user, logout_user
+from saleapp import app, login, admin, db
+from saleapp.decorators import anonymous_required
+from flask_login import login_user, current_user, logout_user, login_required
+import cloudinary.uploader
 
 @app.route("/")
 def index():
@@ -25,11 +27,8 @@ def common_attribute():
     }
 
 @app.route("/login", methods=["get", "post"])
+@anonymous_required
 def login_my_user():
-
-    if current_user.is_authenticated:
-        return redirect("/")
-
     err_msg = None
     if request.method.__eq__("POST"):
         username = request.form.get("username")
@@ -62,6 +61,52 @@ def login_admin_process():
 def logout_my_user():
     logout_user()
     return redirect('/login')
+
+@app.route("/register", methods=['get', 'post'])
+def register():
+    err_msg = None
+    if request.method.__eq__("POST"):
+        password = request.form.get("password")
+        confirm = request.form.get("confirm")
+
+        if password.__eq__(confirm):
+            name = request.form.get('name')
+            username = request.form.get("username")
+            avatar = request.files.get('avatar')
+            file_path = None
+
+            if avatar:
+                res = cloudinary.uploader.upload(avatar)
+                file_path = res['secure_url']
+
+            try:
+                dao.add_user(name, username, password, avatar=file_path)
+                return redirect('/login')
+            except:
+                db.session.rollback()
+                err_msg = "Hệ thống đang bị lỗi! Vui lòng quay lại sau!"
+        else:
+            err_msg = "Mật khẩu không khớp!"
+
+    return render_template("register.html", err_msg=err_msg)
+
+@app.route('/cart')
+def cart():
+    session['cart'] = {
+        "1": {
+            "id": 1,
+            "name": "Iphone 15 Promax",
+            "price": 10000,
+            "quantity": 2
+        },
+        "2": {
+            "id": 2,
+            "name": "Samsung Galaxy",
+            "price": 9000,
+            "quantity": 1
+        }
+    }
+    return render_template('cart.html')
 
 @login.user_loader
 def get_user(user_id):
