@@ -11,6 +11,7 @@
     <div class="col-md-7 col-12">
         <h3 class="text-info">{{prod.name}}</h3>
         <h4 class="text-danger">{{"{:,.0f}".format(prod.price)}} VNĐ</h4>
+        <h4 class="text-danger">{{prod.description|safe}}</h4>
     </div>
 </div>
 

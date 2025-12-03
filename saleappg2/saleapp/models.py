@@ -10,7 +10,7 @@ from flask_login import UserMixin
 class Base(db.Model):
     __abstract__=True
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(150), nullable=False, unique=True)
+    name = Column(String(150), nullable=False)
     created_date = Column(DateTime, default=datetime.now())
     active = Column(Boolean, default=True)
 
@@ -39,18 +39,18 @@ class Product(Base):
 
 if __name__=="__main__":
     with app.app_context():
-        # db.create_all()
-        # c1 = Category(name="Laptop")
-        # c2 = Category(name="Mobile")
-        # c3 = Category(name="Tablet")
-        #
-        # db.session.add_all([c1,c2,c3])
-        #
-        # with open("data/product.json", encoding="utf-8") as f:
-        #     products = json.load(f)
-        #
-        #     for p in products:
-        #         db.session.add(Product(**p))
+        db.create_all()
+        c1 = Category(name="Laptop")
+        c2 = Category(name="Mobile")
+        c3 = Category(name="Tablet")
+
+        db.session.add_all([c1,c2,c3])
+
+        with open("data/product.json", encoding="utf-8") as f:
+            products = json.load(f)
+
+            for p in products:
+                db.session.add(Product(**p))
         import hashlib
 
         password = hashlib.md5("123".encode("utf-8")).hexdigest()
