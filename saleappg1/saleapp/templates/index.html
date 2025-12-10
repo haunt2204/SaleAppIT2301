@@ -18,7 +18,7 @@
                 <h4 class="card-title">{{p.name}}</h4>
                 <p class="card-text">{{p.price}}</p>
                 <a href="/products/{{p.id}}" class="btn btn-primary">Xem chi tiết</a>
-                <a href="#" class="btn btn-danger">Mua hàng</a>
+                <a href="javascript:;" class="btn btn-danger" onclick="addToCart({{p.id}}, '{{p.name}}', {{p.price}})">Mua hàng</a>
             </div>
         </div>
     </div>

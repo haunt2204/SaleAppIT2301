@@ -2,7 +2,7 @@ from flask import redirect
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.theme import Bootstrap4Theme
-from saleapp import app, db
+from saleapp import app, db, dao
 from saleapp.models import Category, Product, User, UserRole
 from flask_admin import BaseView
 from flask_login import logout_user, current_user
@@ -49,7 +49,7 @@ class MyProductView(MyAuthenticatedView):
 class MyAdminIndexView(AdminIndexView):
     @expose("/")
     def index(self):
-        return self.render('admin/index.html')
+        return self.render('admin/index.html', cate_stats=dao.count_product_by_cate())
 
 class MyLogoutView(BaseView):
     @expose("/")
