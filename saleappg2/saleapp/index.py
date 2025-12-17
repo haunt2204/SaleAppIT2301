@@ -3,6 +3,7 @@ from click import confirm
 from flask import render_template, request, redirect, session, jsonify
 import dao
 from saleapp import app, login, admin, db, utils
+from decorators import anonymous_required
 from flask_login import login_user, current_user, logout_user, login_required
 import cloudinary.uploader
 
@@ -23,9 +24,8 @@ def details(id):
 
 
 @app.route('/login', methods=['get', 'post'])
+@anonymous_required
 def login_my_user():
-    if current_user.is_authenticated:
-        return redirect('/')
 
     err_msg = None
 
