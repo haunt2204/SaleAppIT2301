@@ -3,7 +3,7 @@ from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask_admin.theme import Bootstrap4Theme
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user, logout_user
-from saleapp import app, db
+from saleapp import app, db, dao
 from saleapp.models import Category, Product, UserRole
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
@@ -51,7 +51,7 @@ class MyProductView(AuthenticatedView):
 class MyAdminIndexView(AdminIndexView):
     @expose('/')
     def index(self) -> str:
-        return self.render('admin/index.html')
+        return self.render('admin/index.html', cate_stats=dao.count_product_by_cate())
 
 class MyAdminLogoutView(BaseView):
     @expose('/')
